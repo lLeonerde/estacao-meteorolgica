@@ -1,0 +1,1339 @@
+[
+    {
+        "id": "d7b07838d51e3436",
+        "type": "tab",
+        "label": "Flow 2",
+        "disabled": true,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "e7c680d97ca93da7",
+        "type": "inject",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "9",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 110,
+        "y": 100,
+        "wires": [
+            [
+                "19e751b81042da15"
+            ]
+        ]
+    },
+    {
+        "id": "19e751b81042da15",
+        "type": "http request",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "http://192.168.241.84",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 290,
+        "y": 100,
+        "wires": [
+            [
+                "43dec85089272337"
+            ]
+        ]
+    },
+    {
+        "id": "43dec85089272337",
+        "type": "function",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "func": "strBuffer = msg.payload;\ni = 100;\n\nfunction extraiValor(strBuffer)\n{\n    valor = \"\";\n    caracter = \"\";\n    \n    while (caracter != \"'\")\n    {\n        caracter = strBuffer.substring(i, i+1);\n        i++;\n        if (i > 170) break;\n    }\n    caracter = \"\";\n    while ((caracter != \"'\") && (caracter != \"]\"))\n    {\n        valor += caracter;\n        caracter = strBuffer.substring(i, i+1);\n        i++;\n        if (i > 170) break;\n    }\n    return valor;\n}\n\nvelVentoMs = extraiValor(strBuffer, i);\nvelVentoKmH = extraiValor(strBuffer, i);\ndirecaoVento = extraiValor(strBuffer, i);\numidadeAr = extraiValor(strBuffer, i);\ntemperatura = extraiValor(strBuffer, i);\npressaoAtmosferica = extraiValor(strBuffer, i);\naltitude = extraiValor(strBuffer, i);\nCO2ppm = extraiValor(strBuffer, i);\n\nif (velVentoMs != \"\") global.set(\"velVentoMs\", velVentoMs);\nif (velVentoKmH != \"\") global.set(\"velVentoKmH\", velVentoKmH);\nif (direcaoVento != \"\") global.set(\"direcaoVento\", direcaoVento);\nif (umidadeAr != \"\") global.set(\"umidadeAr\", umidadeAr);\nif (temperatura != \"\") global.set(\"temperatura\", temperatura);\nif (pressaoAtmosferica != \"\") global.set(\"pressaoAtmosferica\", pressaoAtmosferica);\nif (altitude != \"\") global.set(\"altitude\", altitude);\nif (CO2ppm != \"\") global.set(\"CO2ppm\", CO2ppm);\n\n//msg.topic = \"INSERT INTO sensor_estacao ( `velVentoMs`,`velVentoKmH`,`direcaoVento`,`umidadeAr`,`temperatura`,`pressaoAtmosferica`,`altitude`,`CO2ppm` ) VALUES (\"+velVentoMs+\", \"+velVentoKmH+\", \"+direcaoVento+\", \"+umidadeAr+\", \"+temperatura+\", \"+pressaoAtmosferica+\", \"+altitude+\", \"+CO2ppm+\");\"\n\n\nmsg.payload = velVentoMs + \";\" + velVentoKmH + \";\" + direcaoVento + \";\" + umidadeAr + \";\" + temperatura + \";\" + pressaoAtmosferica + \";\" + altitude + \";\" + CO2ppm\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 78,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 60,
+        "y": 440,
+        "wires": [
+            [
+                "1853e9d633c56084",
+                "a7f60a65e26a8b75",
+                "6b7585d5e050e645",
+                "5b0d243f40ae7033",
+                "26d5165047889a85",
+                "38f76b67daa813e2",
+                "8edd28aa956699e3",
+                "0bd0b617103de31b"
+            ]
+        ]
+    },
+    {
+        "id": "56bf8ab4a7d6e023",
+        "type": "ui_gauge",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "group": "256c5f5fa8b88db9",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "",
+        "label": "m/s",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 490,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "1853e9d633c56084",
+        "type": "function",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "func": "msg.payload = parseFloat(global.get(\"velVentoMs\"));\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 420,
+        "wires": [
+            [
+                "56bf8ab4a7d6e023",
+                "746639dc687a5d86",
+                "8c3e8f24b8ad41f6"
+            ]
+        ]
+    },
+    {
+        "id": "a7f60a65e26a8b75",
+        "type": "function",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "func": "msg.payload = parseFloat(global.get(\"velVentoKmH\"));\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 460,
+        "wires": [
+            [
+                "f6b55fd36f80e8da",
+                "a9d77521e3c73abc"
+            ]
+        ]
+    },
+    {
+        "id": "a9d77521e3c73abc",
+        "type": "ui_gauge",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "group": "84fe595bcab9876f",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "",
+        "label": "Km/h",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "360",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 490,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "f472d77785dda112",
+        "type": "function",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "func": "direcaoVento = parseFloat(global.get(\"direcaoVento\"));\ndirecaoVento = msg.payload;\nif (direcaoVento == \"N\") direcaoVento = 0;\nif (direcaoVento == \"NE\") direcaoVento = 45;\nif (direcaoVento == \"E\") direcaoVento = 90;\nif (direcaoVento == \"SE\") direcaoVento = 135;\nif (direcaoVento == \"S\") direcaoVento = 180;\nif (direcaoVento == \"SW\") direcaoVento = 225;\nif (direcaoVento == \"W\") direcaoVento = 270;\nif (direcaoVento == \"NW\") direcaoVento = 315;\nif (direcaoVento == \"N\") direcaoVento = 360;\n\nmsg.payload = direcaoVento;\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 620,
+        "y": 500,
+        "wires": [
+            [
+                "e5714cc36439e6ee",
+                "398b260167d27001",
+                "f25b770f19048625"
+            ]
+        ]
+    },
+    {
+        "id": "4c0a12ed6682b470",
+        "type": "ui_slider",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "label": "",
+        "tooltip": "",
+        "group": "eb2ef64490b3f869",
+        "order": 0,
+        "width": "1",
+        "height": "4",
+        "passthru": true,
+        "outs": "all",
+        "topic": "topic",
+        "topicType": "msg",
+        "min": 0,
+        "max": "3000",
+        "step": 1,
+        "x": 490,
+        "y": 540,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7c79786edd799a47",
+        "type": "ui_text",
+        "z": "d7b07838d51e3436",
+        "group": "eb2ef64490b3f869",
+        "order": 0,
+        "width": "2",
+        "height": "1",
+        "name": "",
+        "label": "",
+        "format": "{{msg.payload}}m",
+        "layout": "row-spread",
+        "x": 610,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "6b7585d5e050e645",
+        "type": "function",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "func": "msg.payload = parseFloat(global.get(\"altitude\"));\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 540,
+        "wires": [
+            [
+                "4c0a12ed6682b470",
+                "7c79786edd799a47",
+                "2fd00cb9c406a812",
+                "a5f8222f4c511649"
+            ]
+        ]
+    },
+    {
+        "id": "5b0d243f40ae7033",
+        "type": "function",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "func": "msg.payload = parseFloat(global.get(\"temperatura\"));\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 580,
+        "wires": [
+            [
+                "9020f27b1c495bd0",
+                "31211c2309c3a589",
+                "aab67482b45449d0"
+            ]
+        ]
+    },
+    {
+        "id": "9020f27b1c495bd0",
+        "type": "ui_gauge",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "group": "119bc845eed426fe",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "",
+        "label": "ºC",
+        "format": "{{value}}",
+        "min": "-20",
+        "max": "60",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 490,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "2e4a8ee8d1b69083",
+        "type": "function",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "func": "msg.payload = parseFloat(global.get(\"umidadeAr\"));\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 620,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8818d5a5994c9e72",
+        "type": "ui_gauge",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "group": "ebdf9b8739216c48",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "",
+        "label": "%",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#f50000",
+            "#e6e600",
+            "#00b500"
+        ],
+        "seg1": "40",
+        "seg2": "60",
+        "x": 490,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "124f634a76c96138",
+        "type": "function",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "func": "msg.payload = parseFloat(global.get(\"CO2ppm\"));\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 660,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "51334bb9eb47f025",
+        "type": "ui_gauge",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "group": "dd73bb9c87d8cfa6",
+        "order": 2,
+        "width": "0",
+        "height": "0",
+        "gtype": "gage",
+        "title": "",
+        "label": "ppm",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "1000",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 570,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "21698f298ef3e8ce",
+        "type": "ui_text",
+        "z": "d7b07838d51e3436",
+        "group": "9b838c6f98e91f5e",
+        "order": 0,
+        "width": "6",
+        "height": "1",
+        "name": "",
+        "label": "",
+        "format": "{{msg.payload}}",
+        "layout": "row-center",
+        "x": 490,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "26d5165047889a85",
+        "type": "function",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "func": "direcaoVento = global.get(\"direcaoVento\");\n//direcaoVento = \"NE\";\nmsg.payload = direcaoVento;\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 500,
+        "wires": [
+            [
+                "21698f298ef3e8ce",
+                "f472d77785dda112",
+                "97610313dd09cc50"
+            ]
+        ]
+    },
+    {
+        "id": "e5714cc36439e6ee",
+        "type": "ui_gauge",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "group": "9b838c6f98e91f5e",
+        "order": 1,
+        "width": "6",
+        "height": "3",
+        "gtype": "compass",
+        "title": "",
+        "label": "",
+        "format": "{{}}",
+        "min": 0,
+        "max": "360",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 780,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "c370a93064512907",
+        "type": "function",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "func": "msg.payload = parseFloat(global.get(\"CO2ppm\"));\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 660,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d0d65d420af9b7f4",
+        "type": "function",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "func": "msg.payload = parseFloat(global.get(\"CO2ppm\"));\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 660,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "0bd0b617103de31b",
+        "type": "function",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "func": "msg.payload = parseFloat(global.get(\"CO2ppm\"));\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 660,
+        "wires": [
+            [
+                "996af6a0305fb448",
+                "1d2f4de7ea3acc44",
+                "51334bb9eb47f025"
+            ]
+        ]
+    },
+    {
+        "id": "8edd28aa956699e3",
+        "type": "function",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "func": "msg.payload = parseFloat(global.get(\"umidadeAr\"));\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 620,
+        "wires": [
+            [
+                "1e8c002d0b728c0a",
+                "ec63befcf0960b92",
+                "8818d5a5994c9e72"
+            ]
+        ]
+    },
+    {
+        "id": "38f76b67daa813e2",
+        "type": "function",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "func": "msg.payload = parseFloat(global.get(\"pressaoAtmosferica\"));\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 700,
+        "wires": [
+            [
+                "0224326cd4f06a7d",
+                "eae50925d23e4f66",
+                "66bebb719b09e6fe",
+                "fada3b8991793b13"
+            ]
+        ]
+    },
+    {
+        "id": "0224326cd4f06a7d",
+        "type": "ui_slider",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "label": "",
+        "tooltip": "",
+        "group": "dd6d83493aad4e07",
+        "order": 1,
+        "width": "1",
+        "height": "4",
+        "passthru": true,
+        "outs": "all",
+        "topic": "topic",
+        "topicType": "msg",
+        "min": 0,
+        "max": "1",
+        "step": "0.01",
+        "x": 490,
+        "y": 700,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "eae50925d23e4f66",
+        "type": "ui_text",
+        "z": "d7b07838d51e3436",
+        "group": "dd6d83493aad4e07",
+        "order": 3,
+        "width": "2",
+        "height": "1",
+        "name": "",
+        "label": "",
+        "format": "{{msg.payload}}atm",
+        "layout": "row-spread",
+        "x": 610,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "398b260167d27001",
+        "type": "debug",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 850,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "880c261f010ea591",
+        "type": "mysql",
+        "z": "d7b07838d51e3436",
+        "mydb": "5826933b42d228ab",
+        "name": "Banco de Dados",
+        "x": 1070,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "31211c2309c3a589",
+        "type": "function",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "func": "temperatura=msg.payload\nmsg.topic = \"INSERT INTO temperatura ( temperatura) VALUES (\"+temperatura+\");\"\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 540,
+        "y": 20,
+        "wires": [
+            [
+                "7cce9ec86ce68105"
+            ]
+        ]
+    },
+    {
+        "id": "7cce9ec86ce68105",
+        "type": "delay",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "pauseType": "queue",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "60",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 740,
+        "y": 20,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2fd00cb9c406a812",
+        "type": "function",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "func": "altitude = msg.payload\nmsg.topic = \"INSERT INTO altitude (altitude) VALUES (\"+altitude+\");\"\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 540,
+        "y": 60,
+        "wires": [
+            [
+                "9b7d39a499fc566f"
+            ]
+        ]
+    },
+    {
+        "id": "9b7d39a499fc566f",
+        "type": "delay",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "pauseType": "queue",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "60",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 740,
+        "y": 60,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1e8c002d0b728c0a",
+        "type": "function",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "func": "umidadeAr = msg.payload\nmsg.topic = \"INSERT INTO umidade_ar (umidadeAr) VALUES (\"+umidadeAr+\");\"\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 540,
+        "y": 100,
+        "wires": [
+            [
+                "55ac4e605cb3807a"
+            ]
+        ]
+    },
+    {
+        "id": "996af6a0305fb448",
+        "type": "function",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "func": "CO2ppm = msg.payload\nmsg.topic = \"INSERT INTO co2ppm (CO2ppm) VALUES (\"+CO2ppm+\");\"\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 540,
+        "y": 140,
+        "wires": [
+            [
+                "ac071dec61b0d559"
+            ]
+        ]
+    },
+    {
+        "id": "66bebb719b09e6fe",
+        "type": "function",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "func": "pressaoAtmosferica = msg.payload\nmsg.topic = \"INSERT INTO pressao_atmosferica (pressaoAtmosferica) VALUES (\"+pressaoAtmosferica+\");\"\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 540,
+        "y": 180,
+        "wires": [
+            [
+                "da46d7ee1fb2eef5"
+            ]
+        ]
+    },
+    {
+        "id": "f6b55fd36f80e8da",
+        "type": "function",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "func": "velVentoKmH = msg.payload\nmsg.topic = \"INSERT INTO velocidade_vento_kmh (velVentoKmH) VALUES (\"+velVentoKmH+\");\"\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 540,
+        "y": 220,
+        "wires": [
+            [
+                "be8b37477ee91f51"
+            ]
+        ]
+    },
+    {
+        "id": "746639dc687a5d86",
+        "type": "function",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "func": "velVentoMs = msg.payload\nmsg.topic = \"INSERT INTO velocidade_vento (velVentoMs) VALUES (\"+velVentoMs+\");\"\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 540,
+        "y": 260,
+        "wires": [
+            [
+                "f69d1f121d034a83"
+            ]
+        ]
+    },
+    {
+        "id": "55ac4e605cb3807a",
+        "type": "delay",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "pauseType": "queue",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "60",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 740,
+        "y": 100,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ac071dec61b0d559",
+        "type": "delay",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "pauseType": "queue",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "60",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 740,
+        "y": 140,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "da46d7ee1fb2eef5",
+        "type": "delay",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "pauseType": "queue",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "60",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 740,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "be8b37477ee91f51",
+        "type": "delay",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "pauseType": "queue",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "60",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 740,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f69d1f121d034a83",
+        "type": "delay",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "pauseType": "queue",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "60",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 740,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f25b770f19048625",
+        "type": "function",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "func": "direcaoVento = msg.payload\nmsg.topic = \"INSERT INTO direcao_vento (direcaoVento) VALUES (\"+direcaoVento+\");\"\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 540,
+        "y": 300,
+        "wires": [
+            [
+                "287fce370301d55d"
+            ]
+        ]
+    },
+    {
+        "id": "287fce370301d55d",
+        "type": "delay",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "pauseType": "queue",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "60",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 740,
+        "y": 300,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "97610313dd09cc50",
+        "type": "debug",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 650,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "725bbefaacf841b3",
+        "type": "inject",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "60",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "N",
+        "payloadType": "str",
+        "x": 330,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1b6a529c3ebccc44",
+        "type": "inject",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "90",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "S",
+        "payloadType": "str",
+        "x": 330,
+        "y": 300,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1d991d1cf11b312f",
+        "type": "inject",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "120",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "NE",
+        "payloadType": "str",
+        "x": 330,
+        "y": 340,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "aab67482b45449d0",
+        "type": "function",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "func": "context.flow.temperatura_Est=msg.payload\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 620,
+        "y": 580,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ec63befcf0960b92",
+        "type": "function",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "func": "context.flow.umidade_Est=msg.payload\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 620,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1d2f4de7ea3acc44",
+        "type": "function",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "func": "context.flow.CO2ppm_Est=msg.payload\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 820,
+        "y": 640,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "fada3b8991793b13",
+        "type": "function",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "func": "context.flow.pressaoAtmosferica_Est=msg.payload\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 740,
+        "y": 700,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a5f8222f4c511649",
+        "type": "function",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "func": "context.flow.altitude_Est=msg.payload\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 740,
+        "y": 540,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5827cb760f7bc734",
+        "type": "inject",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "480",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 290,
+        "y": 860,
+        "wires": [
+            [
+                "de503f60443bd144"
+            ]
+        ]
+    },
+    {
+        "id": "de503f60443bd144",
+        "type": "function",
+        "z": "d7b07838d51e3436",
+        "name": "Thinkspeak",
+        "func": "msg.method = \"GET\"\nmsg.url =\"https://api.thingspeak.com/update?api_key=SHR2VYIACAZ4IT01&field1=\" + context.flow.velVentoMs_Est + \"&field2=\" + context.flow.altitude_Est + \"&field3=\" + context.flow.pressaoAtmosferica_Est + \"&field4=\" + context.flow.CO2ppm_Est + \"&field5=\" + context.flow.umidade_Est + \"&field6=\" + context.flow.temperatura_Est ;\n//msg.url = \"https://api.thingspeak.com/update?api_key=5YF95RB77IF1IATW&field1=\" + context.flow.tempe + \"&field2=\" + context.flow.humi + \"&field3=\" + context.flow.ilumi + \"&field4=\" + context.flow.humisol + \"&field5=\" + context.flow.tempechip ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 470,
+        "y": 860,
+        "wires": [
+            [
+                "3c55eaccf578e0c7"
+            ]
+        ]
+    },
+    {
+        "id": "aeb9d5986b6876f8",
+        "type": "comment",
+        "z": "d7b07838d51e3436",
+        "name": "Api ThingSpeak",
+        "info": "",
+        "x": 460,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "3c55eaccf578e0c7",
+        "type": "http request",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "method": "use",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "x": 630,
+        "y": 860,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8c3e8f24b8ad41f6",
+        "type": "function",
+        "z": "d7b07838d51e3436",
+        "name": "",
+        "func": "context.flow.velVentoMs_Est=msg.payload\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 620,
+        "y": 420,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "256c5f5fa8b88db9",
+        "type": "ui_group",
+        "name": "Velocidade do Vento (m/s)",
+        "tab": "3e9ca3f27dcbb47d",
+        "order": 4,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "84fe595bcab9876f",
+        "type": "ui_group",
+        "name": "Velocidade do Vento (Km/h)",
+        "tab": "3e9ca3f27dcbb47d",
+        "order": 5,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "eb2ef64490b3f869",
+        "type": "ui_group",
+        "name": "Altitude",
+        "tab": "3e9ca3f27dcbb47d",
+        "order": 7,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "119bc845eed426fe",
+        "type": "ui_group",
+        "name": "Temperatura",
+        "tab": "3e9ca3f27dcbb47d",
+        "order": 8,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "ebdf9b8739216c48",
+        "type": "ui_group",
+        "name": "Umidade",
+        "tab": "3e9ca3f27dcbb47d",
+        "order": 9,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "dd73bb9c87d8cfa6",
+        "type": "ui_group",
+        "name": "Qualidade do Ar (taxa de CO2)",
+        "tab": "3e9ca3f27dcbb47d",
+        "order": 9,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "9b838c6f98e91f5e",
+        "type": "ui_group",
+        "name": " Direção do Vento",
+        "tab": "3e9ca3f27dcbb47d",
+        "order": 6,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "dd6d83493aad4e07",
+        "type": "ui_group",
+        "name": "Pressão Atmosférica",
+        "tab": "3e9ca3f27dcbb47d",
+        "order": 10,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "5826933b42d228ab",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "estacao_metereologicase3",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "3e9ca3f27dcbb47d",
+        "type": "ui_tab",
+        "name": "FATEC-Jundiaí - Estação Meteorológica - Coleta de dados em tempo real",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]

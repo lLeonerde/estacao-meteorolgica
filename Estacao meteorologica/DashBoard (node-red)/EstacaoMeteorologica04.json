@@ -1,0 +1,687 @@
+[
+    {
+        "id": "74908e6245fcf388",
+        "type": "tab",
+        "label": "Flow 2",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "6944b87d55d6dc9d",
+        "type": "inject",
+        "z": "74908e6245fcf388",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "1",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payloadType": "date",
+        "x": 160,
+        "y": 140,
+        "wires": [
+            [
+                "bde818f0311d2590"
+            ]
+        ]
+    },
+    {
+        "id": "bde818f0311d2590",
+        "type": "http request",
+        "z": "74908e6245fcf388",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "http://192.168.1.3",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "x": 310,
+        "y": 140,
+        "wires": [
+            [
+                "0fd7a76e5d79e71b"
+            ]
+        ]
+    },
+    {
+        "id": "0fd7a76e5d79e71b",
+        "type": "function",
+        "z": "74908e6245fcf388",
+        "name": "",
+        "func": "strBuffer = msg.payload;\ni = 100;\n\nfunction extraiValor(strBuffer)\n{\n    valor = \"\";\n    caracter = \"\";\n    \n    while (caracter != \"'\")\n    {\n        caracter = strBuffer.substring(i, i+1);\n        i++;\n        if (i > 170) break;\n    }\n    caracter = \"\";\n    while ((caracter != \"'\") && (caracter != \"]\"))\n    {\n        valor += caracter;\n        caracter = strBuffer.substring(i, i+1);\n        i++;\n        if (i > 170) break;\n    }\n    return valor;\n}\n\nvelVentoMs = extraiValor(strBuffer, i);\nvelVentoKmH = extraiValor(strBuffer, i);\ndirecaoVento = extraiValor(strBuffer, i);\numidadeAr = extraiValor(strBuffer, i);\ntemperatura = extraiValor(strBuffer, i);\npressaoAtmosferica = extraiValor(strBuffer, i);\naltitude = extraiValor(strBuffer, i);\nCO2ppm = extraiValor(strBuffer, i);\n\nif (velVentoMs != \"\") global.set(\"velVentoMs\", velVentoMs);\nif (velVentoKmH != \"\") global.set(\"velVentoKmH\", velVentoKmH);\nif (direcaoVento != \"\") global.set(\"direcaoVento\", direcaoVento);\nif (umidadeAr != \"\") global.set(\"umidadeAr\", umidadeAr);\nif (temperatura != \"\") global.set(\"temperatura\", temperatura);\nif (pressaoAtmosferica != \"\") global.set(\"pressaoAtmosferica\", pressaoAtmosferica);\nif (altitude != \"\") global.set(\"altitude\", altitude);\nif (CO2ppm != \"\") global.set(\"CO2ppm\", CO2ppm);\n\nmsg.payload = velVentoMs + \";\" + velVentoKmH + \";\" + direcaoVento + \";\" + umidadeAr + \";\" + temperatura + \";\" + pressaoAtmosferica + \";\" + altitude + \";\" + CO2ppm\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 140,
+        "y": 220,
+        "wires": [
+            [
+                "a9b943d1f1d86c6a",
+                "36e2500d171be898",
+                "d1c3d50eaacb296a",
+                "a8f049531d336db5",
+                "147a3f64dfff30c2",
+                "7a8e72d6e8434a65",
+                "50f7a1455d559d08",
+                "b4174cd3665007f6"
+            ]
+        ]
+    },
+    {
+        "id": "68b7c7cdc5fdac7f",
+        "type": "ui_gauge",
+        "z": "74908e6245fcf388",
+        "name": "",
+        "group": "256c5f5fa8b88db9",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "",
+        "label": "m/s",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 430,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "a9b943d1f1d86c6a",
+        "type": "function",
+        "z": "74908e6245fcf388",
+        "name": "",
+        "func": "msg.payload = parseFloat(global.get(\"velVentoMs\"));\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 320,
+        "wires": [
+            [
+                "68b7c7cdc5fdac7f"
+            ]
+        ]
+    },
+    {
+        "id": "36e2500d171be898",
+        "type": "function",
+        "z": "74908e6245fcf388",
+        "name": "",
+        "func": "msg.payload = parseFloat(global.get(\"velVentoKmH\"));\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 360,
+        "wires": [
+            [
+                "22ff22dacca535da"
+            ]
+        ]
+    },
+    {
+        "id": "22ff22dacca535da",
+        "type": "ui_gauge",
+        "z": "74908e6245fcf388",
+        "name": "",
+        "group": "84fe595bcab9876f",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "",
+        "label": "Km/h",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "360",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 430,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "5d2cdcd935531a0a",
+        "type": "function",
+        "z": "74908e6245fcf388",
+        "name": "",
+        "func": "direcaoVento = parseFloat(global.get(\"direcaoVento\"));\ndirecaoVento = 1;\nif (direcaoVento == \"N\") direcaoVento = 0;\nif (direcaoVento == \"NE\") direcaoVento = 1;\nif (direcaoVento == \"E\") direcaoVento = 2;\nif (direcaoVento == \"SE\") direcaoVento = 3;\nif (direcaoVento == \"S\") direcaoVento = 4;\nif (direcaoVento == \"SW\") direcaoVento = 5;\nif (direcaoVento == \"W\") direcaoVento = 6;\nif (direcaoVento == \"WE\") direcaoVento = 7;\n\nmsg.payload = direcaoVento;\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 560,
+        "y": 400,
+        "wires": [
+            [
+                "1a79b88f5719bb0c"
+            ]
+        ]
+    },
+    {
+        "id": "1d5a39be9a76d576",
+        "type": "ui_slider",
+        "z": "74908e6245fcf388",
+        "name": "",
+        "label": "",
+        "tooltip": "",
+        "group": "eb2ef64490b3f869",
+        "order": 0,
+        "width": "1",
+        "height": "4",
+        "passthru": true,
+        "outs": "all",
+        "topic": "topic",
+        "topicType": "msg",
+        "min": 0,
+        "max": "3000",
+        "step": 1,
+        "className": "",
+        "x": 430,
+        "y": 440,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "657a5f2207cf8ef9",
+        "type": "ui_text",
+        "z": "74908e6245fcf388",
+        "group": "eb2ef64490b3f869",
+        "order": 0,
+        "width": "2",
+        "height": "1",
+        "name": "",
+        "label": "",
+        "format": "{{msg.payload}}m",
+        "layout": "row-spread",
+        "className": "",
+        "x": 550,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "d1c3d50eaacb296a",
+        "type": "function",
+        "z": "74908e6245fcf388",
+        "name": "",
+        "func": "msg.payload = parseFloat(global.get(\"altitude\"));\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 290,
+        "y": 440,
+        "wires": [
+            [
+                "1d5a39be9a76d576",
+                "657a5f2207cf8ef9"
+            ]
+        ]
+    },
+    {
+        "id": "a8f049531d336db5",
+        "type": "function",
+        "z": "74908e6245fcf388",
+        "name": "",
+        "func": "msg.payload = parseFloat(global.get(\"temperatura\"));\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 480,
+        "wires": [
+            [
+                "badb71ab5f99af96"
+            ]
+        ]
+    },
+    {
+        "id": "badb71ab5f99af96",
+        "type": "ui_gauge",
+        "z": "74908e6245fcf388",
+        "name": "",
+        "group": "119bc845eed426fe",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "",
+        "label": "ºC",
+        "format": "{{value}}",
+        "min": "-20",
+        "max": "60",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 420,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "147a3f64dfff30c2",
+        "type": "function",
+        "z": "74908e6245fcf388",
+        "name": "",
+        "func": "msg.payload = parseFloat(global.get(\"umidadeAr\"));\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 520,
+        "wires": [
+            [
+                "013c5945aa0ab9e7"
+            ]
+        ]
+    },
+    {
+        "id": "013c5945aa0ab9e7",
+        "type": "ui_gauge",
+        "z": "74908e6245fcf388",
+        "name": "",
+        "group": "ebdf9b8739216c48",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "",
+        "label": "%",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#f50000",
+            "#e6e600",
+            "#00b500"
+        ],
+        "seg1": "40",
+        "seg2": "60",
+        "className": "",
+        "x": 420,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "7a8e72d6e8434a65",
+        "type": "function",
+        "z": "74908e6245fcf388",
+        "name": "",
+        "func": "msg.payload = parseFloat(global.get(\"CO2ppm\"));\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 560,
+        "wires": [
+            [
+                "33f5708acc0ddd90"
+            ]
+        ]
+    },
+    {
+        "id": "33f5708acc0ddd90",
+        "type": "ui_gauge",
+        "z": "74908e6245fcf388",
+        "name": "",
+        "group": "dd73bb9c87d8cfa6",
+        "order": 2,
+        "width": "0",
+        "height": "0",
+        "gtype": "gage",
+        "title": "",
+        "label": "ppm",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "1000",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 420,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "3bb592804a48ee63",
+        "type": "ui_text",
+        "z": "74908e6245fcf388",
+        "group": "9b838c6f98e91f5e",
+        "order": 0,
+        "width": "6",
+        "height": "1",
+        "name": "",
+        "label": "",
+        "format": "{{msg.payload}}",
+        "layout": "row-center",
+        "className": "",
+        "x": 430,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "50f7a1455d559d08",
+        "type": "function",
+        "z": "74908e6245fcf388",
+        "name": "",
+        "func": "direcaoVento = global.get(\"direcaoVento\");\ndirecaoVento = \"NE\";\nmsg.payload = direcaoVento;\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 400,
+        "wires": [
+            [
+                "3bb592804a48ee63",
+                "5d2cdcd935531a0a"
+            ]
+        ]
+    },
+    {
+        "id": "1a79b88f5719bb0c",
+        "type": "ui_gauge",
+        "z": "74908e6245fcf388",
+        "name": "",
+        "group": "9b838c6f98e91f5e",
+        "order": 1,
+        "width": "6",
+        "height": "3",
+        "gtype": "compass",
+        "title": "",
+        "label": "",
+        "format": "{{}}",
+        "min": 0,
+        "max": "7",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 710,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "052cab13467a2bff",
+        "type": "function",
+        "z": "74908e6245fcf388",
+        "name": "",
+        "func": "msg.payload = parseFloat(global.get(\"CO2ppm\"));\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 560,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d7c8cef5a914d6c6",
+        "type": "function",
+        "z": "74908e6245fcf388",
+        "name": "",
+        "func": "msg.payload = parseFloat(global.get(\"CO2ppm\"));\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 560,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "89c6584ca951c18b",
+        "type": "function",
+        "z": "74908e6245fcf388",
+        "name": "",
+        "func": "msg.payload = parseFloat(global.get(\"CO2ppm\"));\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 560,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d459b11ca3b72164",
+        "type": "function",
+        "z": "74908e6245fcf388",
+        "name": "",
+        "func": "msg.payload = parseFloat(global.get(\"umidadeAr\"));\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 520,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b4174cd3665007f6",
+        "type": "function",
+        "z": "74908e6245fcf388",
+        "name": "",
+        "func": "msg.payload = parseFloat(global.get(\"pressaoAtmosferica\"));\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 600,
+        "wires": [
+            [
+                "da448867b9a6e5b7",
+                "04f5e953466b2638"
+            ]
+        ]
+    },
+    {
+        "id": "da448867b9a6e5b7",
+        "type": "ui_slider",
+        "z": "74908e6245fcf388",
+        "name": "",
+        "label": "",
+        "tooltip": "",
+        "group": "dd6d83493aad4e07",
+        "order": 1,
+        "width": "1",
+        "height": "4",
+        "passthru": true,
+        "outs": "all",
+        "topic": "topic",
+        "topicType": "msg",
+        "min": 0,
+        "max": "1",
+        "step": "0.01",
+        "className": "",
+        "x": 430,
+        "y": 600,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "04f5e953466b2638",
+        "type": "ui_text",
+        "z": "74908e6245fcf388",
+        "group": "dd6d83493aad4e07",
+        "order": 3,
+        "width": "2",
+        "height": "1",
+        "name": "",
+        "label": "",
+        "format": "{{msg.payload}}atm",
+        "layout": "row-spread",
+        "className": "",
+        "x": 550,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "256c5f5fa8b88db9",
+        "type": "ui_group",
+        "name": "Velocidade do Vento (m/s)",
+        "tab": "3e9ca3f27dcbb47d",
+        "order": 4,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "84fe595bcab9876f",
+        "type": "ui_group",
+        "name": "Velocidade do Vento (Km/h)",
+        "tab": "3e9ca3f27dcbb47d",
+        "order": 5,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "eb2ef64490b3f869",
+        "type": "ui_group",
+        "name": "Altitude",
+        "tab": "3e9ca3f27dcbb47d",
+        "order": 7,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "119bc845eed426fe",
+        "type": "ui_group",
+        "name": "Temperatura",
+        "tab": "3e9ca3f27dcbb47d",
+        "order": 8,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "ebdf9b8739216c48",
+        "type": "ui_group",
+        "name": "Umidade",
+        "tab": "3e9ca3f27dcbb47d",
+        "order": 9,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "dd73bb9c87d8cfa6",
+        "type": "ui_group",
+        "name": "Qualidade do Ar (taxa de CO2)",
+        "tab": "3e9ca3f27dcbb47d",
+        "order": 9,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "9b838c6f98e91f5e",
+        "type": "ui_group",
+        "name": " Direção do Vento",
+        "tab": "3e9ca3f27dcbb47d",
+        "order": 6,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "dd6d83493aad4e07",
+        "type": "ui_group",
+        "name": "Pressão Atmosférica",
+        "tab": "3e9ca3f27dcbb47d",
+        "order": 10,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "3e9ca3f27dcbb47d",
+        "type": "ui_tab",
+        "name": "FATEC-Jundiaí - Estação Meteorológica - Coleta de dados em tempo real",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]

@@ -1,0 +1,685 @@
+[
+    {
+        "id": "ee0117489505d9a1",
+        "type": "tab",
+        "label": "Teste mySQL WorkBench",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "1e5005c700436b9b",
+        "type": "sqlstring-format",
+        "z": "ee0117489505d9a1",
+        "name": "",
+        "query": "INSERT into testevar\n(`temperatura`) VALUES (?);",
+        "vars": "payload",
+        "outField": "topic",
+        "x": 370,
+        "y": 200,
+        "wires": [
+            [
+                "d86c16296e622881"
+            ]
+        ]
+    },
+    {
+        "id": "d86c16296e622881",
+        "type": "mysql",
+        "z": "ee0117489505d9a1",
+        "mydb": "5826933b42d228ab",
+        "name": "",
+        "x": 600,
+        "y": 200,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "06300745c4419c4e",
+        "type": "aedes broker",
+        "z": "ee0117489505d9a1",
+        "name": "",
+        "mqtt_port": 1883,
+        "mqtt_ws_bind": "port",
+        "mqtt_ws_port": "",
+        "mqtt_ws_path": "",
+        "cert": "",
+        "key": "",
+        "certname": "",
+        "keyname": "",
+        "persistence_bind": "mongodb",
+        "dburl": "",
+        "usetls": false,
+        "x": 170,
+        "y": 60,
+        "wires": [
+            [
+                "691143b87dec0f22"
+            ],
+            [
+                "455570997782a7b7"
+            ]
+        ]
+    },
+    {
+        "id": "455570997782a7b7",
+        "type": "debug",
+        "z": "ee0117489505d9a1",
+        "name": "Broker Publish event",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 380,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "691143b87dec0f22",
+        "type": "debug",
+        "z": "ee0117489505d9a1",
+        "name": "Broker Status Event",
+        "active": false,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 380,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "7eebb67a627fb3cc",
+        "type": "mqtt in",
+        "z": "ee0117489505d9a1",
+        "name": "",
+        "topic": "estacao/temperatura",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "8db3fac0.99dd48",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 170,
+        "y": 160,
+        "wires": [
+            [
+                "fb456187d9ba5e77",
+                "1e5005c700436b9b"
+            ]
+        ]
+    },
+    {
+        "id": "fef74800e3b82e88",
+        "type": "mqtt in",
+        "z": "ee0117489505d9a1",
+        "name": "",
+        "topic": "estacao/umidade",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "8db3fac0.99dd48",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 160,
+        "y": 300,
+        "wires": [
+            [
+                "3c2cb81cc3e20cbb",
+                "7f050d33e145bc88"
+            ]
+        ]
+    },
+    {
+        "id": "fb456187d9ba5e77",
+        "type": "ui_gauge",
+        "z": "ee0117489505d9a1",
+        "name": "",
+        "group": "119bc845eed426fe",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "",
+        "label": "ºC",
+        "format": "{{value}}",
+        "min": "-20",
+        "max": "60",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 370,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "3c2cb81cc3e20cbb",
+        "type": "ui_gauge",
+        "z": "ee0117489505d9a1",
+        "name": "",
+        "group": "ebdf9b8739216c48",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "",
+        "label": "%",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#f50000",
+            "#e6e600",
+            "#00b500"
+        ],
+        "seg1": "40",
+        "seg2": "60",
+        "x": 430,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "7f050d33e145bc88",
+        "type": "sqlstring-format",
+        "z": "ee0117489505d9a1",
+        "name": "",
+        "query": "INSERT into testevar\n(`umidade`) VALUES (?);",
+        "vars": "payload",
+        "outField": "topic",
+        "x": 430,
+        "y": 320,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4c34d2d852e1c297",
+        "type": "mqtt in",
+        "z": "ee0117489505d9a1",
+        "name": "",
+        "topic": "estacao/anem/m",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "8db3fac0.99dd48",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 160,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "98173611e880ecea",
+        "type": "mqtt in",
+        "z": "ee0117489505d9a1",
+        "name": "",
+        "topic": "estacao/anem/km",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "8db3fac0.99dd48",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 170,
+        "y": 420,
+        "wires": [
+            [
+                "aec5bd04b47d7677"
+            ]
+        ]
+    },
+    {
+        "id": "94f5e25a225b4d02",
+        "type": "mqtt in",
+        "z": "ee0117489505d9a1",
+        "name": "",
+        "topic": "estacao/direcao_vento",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "8db3fac0.99dd48",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 180,
+        "y": 480,
+        "wires": [
+            [
+                "7c55c640e3c8e4f4",
+                "b47a8761247cd3b9"
+            ]
+        ]
+    },
+    {
+        "id": "6b1b2bbb877d6d8d",
+        "type": "mqtt in",
+        "z": "ee0117489505d9a1",
+        "name": "",
+        "topic": "estacao/pressao",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "8db3fac0.99dd48",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 160,
+        "y": 580,
+        "wires": [
+            [
+                "b21cc1962074c18a",
+                "92af5c637e6f094c"
+            ]
+        ]
+    },
+    {
+        "id": "076c563a32828ad1",
+        "type": "mqtt in",
+        "z": "ee0117489505d9a1",
+        "name": "",
+        "topic": "estacao/altitude",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "8db3fac0.99dd48",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 160,
+        "y": 680,
+        "wires": [
+            [
+                "64932f88a1433723"
+            ]
+        ]
+    },
+    {
+        "id": "34bee951b8938c6c",
+        "type": "mqtt in",
+        "z": "ee0117489505d9a1",
+        "name": "",
+        "topic": "estacao/nivel_co2",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "8db3fac0.99dd48",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 170,
+        "y": 740,
+        "wires": [
+            [
+                "bb08665961283a59"
+            ]
+        ]
+    },
+    {
+        "id": "ac2829f0e343669d",
+        "type": "mqtt in",
+        "z": "ee0117489505d9a1",
+        "name": "",
+        "topic": "estacao/luminosidade",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "8db3fac0.99dd48",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 180,
+        "y": 1040,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "0c0f261a2879b553",
+        "type": "mqtt in",
+        "z": "ee0117489505d9a1",
+        "name": "",
+        "topic": "estacao/pluviometro'",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "8db3fac0.99dd48",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 170,
+        "y": 1120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "aec5bd04b47d7677",
+        "type": "ui_gauge",
+        "z": "ee0117489505d9a1",
+        "name": "",
+        "group": "84fe595bcab9876f",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "",
+        "label": "Km/h",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "360",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 410,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "f7f5f07f34c71816",
+        "type": "ui_text",
+        "z": "ee0117489505d9a1",
+        "group": "eb2ef64490b3f869",
+        "order": 0,
+        "width": "2",
+        "height": "1",
+        "name": "",
+        "label": "",
+        "format": "{{msg.payload}}m",
+        "layout": "row-spread",
+        "x": 510,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "64932f88a1433723",
+        "type": "ui_slider",
+        "z": "ee0117489505d9a1",
+        "name": "",
+        "label": "",
+        "tooltip": "",
+        "group": "eb2ef64490b3f869",
+        "order": 0,
+        "width": "1",
+        "height": "4",
+        "passthru": true,
+        "outs": "all",
+        "topic": "topic",
+        "topicType": "msg",
+        "min": 0,
+        "max": "3000",
+        "step": 1,
+        "x": 390,
+        "y": 680,
+        "wires": [
+            [
+                "f7f5f07f34c71816"
+            ]
+        ]
+    },
+    {
+        "id": "bb08665961283a59",
+        "type": "ui_gauge",
+        "z": "ee0117489505d9a1",
+        "name": "",
+        "group": "dd73bb9c87d8cfa6",
+        "order": 2,
+        "width": "0",
+        "height": "0",
+        "gtype": "gage",
+        "title": "",
+        "label": "ppm",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "1000",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 390,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "eea841271948eafe",
+        "type": "ui_gauge",
+        "z": "ee0117489505d9a1",
+        "name": "",
+        "group": "9b838c6f98e91f5e",
+        "order": 1,
+        "width": "6",
+        "height": "3",
+        "gtype": "compass",
+        "title": "",
+        "label": "",
+        "format": "{{}}",
+        "min": 0,
+        "max": "360",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 560,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "b47a8761247cd3b9",
+        "type": "function",
+        "z": "ee0117489505d9a1",
+        "name": "",
+        "func": "direcaoVento = parseFloat(global.get(\"direcaoVento\"));\ndirecaoVento = msg.payload;\nif (direcaoVento == \"N\") direcaoVento = 0;\nif (direcaoVento == \"NE\") direcaoVento = 45;\nif (direcaoVento == \"E\") direcaoVento = 90;\nif (direcaoVento == \"SE\") direcaoVento = 135;\nif (direcaoVento == \"S\") direcaoVento = 180;\nif (direcaoVento == \"SW\") direcaoVento = 225;\nif (direcaoVento == \"W\") direcaoVento = 270;\nif (direcaoVento == \"NW\") direcaoVento = 315;\nif (direcaoVento == \"N\") direcaoVento = 360;\n\nmsg.payload = direcaoVento;\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 520,
+        "wires": [
+            [
+                "eea841271948eafe"
+            ]
+        ]
+    },
+    {
+        "id": "7c55c640e3c8e4f4",
+        "type": "ui_text",
+        "z": "ee0117489505d9a1",
+        "group": "9b838c6f98e91f5e",
+        "order": 0,
+        "width": "6",
+        "height": "1",
+        "name": "",
+        "label": "",
+        "format": "{{msg.payload}}",
+        "layout": "row-center",
+        "x": 390,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "92af5c637e6f094c",
+        "type": "ui_text",
+        "z": "ee0117489505d9a1",
+        "group": "dd6d83493aad4e07",
+        "order": 3,
+        "width": "2",
+        "height": "1",
+        "name": "",
+        "label": "",
+        "format": "{{msg.payload}}atm",
+        "layout": "row-spread",
+        "x": 390,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "b21cc1962074c18a",
+        "type": "ui_slider",
+        "z": "ee0117489505d9a1",
+        "name": "",
+        "label": "",
+        "tooltip": "",
+        "group": "dd6d83493aad4e07",
+        "order": 1,
+        "width": "1",
+        "height": "4",
+        "passthru": true,
+        "outs": "all",
+        "topic": "topic",
+        "topicType": "msg",
+        "min": 0,
+        "max": "1",
+        "step": "0.01",
+        "x": 390,
+        "y": 580,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5826933b42d228ab",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "estacaometeorologica",
+        "tz": "",
+        "charset": "UTF8",
+        "credentials": {}
+    },
+    {
+        "id": "8db3fac0.99dd48",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "compatmode": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "119bc845eed426fe",
+        "type": "ui_group",
+        "name": "Temperatura",
+        "tab": "3e9ca3f27dcbb47d",
+        "order": 8,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "ebdf9b8739216c48",
+        "type": "ui_group",
+        "name": "Umidade",
+        "tab": "3e9ca3f27dcbb47d",
+        "order": 9,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "84fe595bcab9876f",
+        "type": "ui_group",
+        "name": "Velocidade do Vento (Km/h)",
+        "tab": "3e9ca3f27dcbb47d",
+        "order": 5,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "eb2ef64490b3f869",
+        "type": "ui_group",
+        "name": "Altitude",
+        "tab": "3e9ca3f27dcbb47d",
+        "order": 7,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "dd73bb9c87d8cfa6",
+        "type": "ui_group",
+        "name": "Qualidade do Ar (taxa de CO2)",
+        "tab": "3e9ca3f27dcbb47d",
+        "order": 9,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "9b838c6f98e91f5e",
+        "type": "ui_group",
+        "name": " Direção do Vento",
+        "tab": "3e9ca3f27dcbb47d",
+        "order": 6,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "dd6d83493aad4e07",
+        "type": "ui_group",
+        "name": "Pressão Atmosférica",
+        "tab": "3e9ca3f27dcbb47d",
+        "order": 10,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "3e9ca3f27dcbb47d",
+        "type": "ui_tab",
+        "name": "FATEC-Jundiaí - Estação Meteorológica - Coleta de dados em tempo real",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]
