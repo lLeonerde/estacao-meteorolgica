@@ -1,0 +1,298 @@
+[
+    {
+        "id": "6e6ba8efcb028acc",
+        "type": "tab",
+        "label": "Fluxo 2",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "14339418b5d70a07",
+        "type": "mqtt in",
+        "z": "6e6ba8efcb028acc",
+        "name": "",
+        "topic": "/bmp_bh_sht",
+        "qos": "2",
+        "datatype": "utf8",
+        "broker": "e1c5b2ccc1198e48",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 170,
+        "y": 220,
+        "wires": [
+            [
+                "42f75626e490f037",
+                "d27aaa05733a2969"
+            ]
+        ]
+    },
+    {
+        "id": "21e40dd9c423a9ec",
+        "type": "debug",
+        "z": "6e6ba8efcb028acc",
+        "name": "debug 11",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1000,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "42f75626e490f037",
+        "type": "string",
+        "z": "6e6ba8efcb028acc",
+        "name": "",
+        "methods": [
+            {
+                "name": "replaceAll",
+                "params": [
+                    {
+                        "type": "str",
+                        "value": "{"
+                    },
+                    {
+                        "type": "str",
+                        "value": ""
+                    }
+                ]
+            },
+            {
+                "name": "replaceAll",
+                "params": [
+                    {
+                        "type": "str",
+                        "value": "}"
+                    },
+                    {
+                        "type": "str",
+                        "value": ""
+                    }
+                ]
+            },
+            {
+                "name": "replaceAll",
+                "params": [
+                    {
+                        "type": "str",
+                        "value": "temperatura"
+                    },
+                    {
+                        "type": "str",
+                        "value": ""
+                    }
+                ]
+            },
+            {
+                "name": "replaceAll",
+                "params": [
+                    {
+                        "type": "str",
+                        "value": "umidade"
+                    },
+                    {
+                        "type": "str",
+                        "value": ""
+                    }
+                ]
+            },
+            {
+                "name": "replaceAll",
+                "params": [
+                    {
+                        "type": "str",
+                        "value": "mivel_co2"
+                    },
+                    {
+                        "type": "str",
+                        "value": ""
+                    }
+                ]
+            },
+            {
+                "name": "replaceAll",
+                "params": [
+                    {
+                        "type": "str",
+                        "value": "pressao"
+                    },
+                    {
+                        "type": "str",
+                        "value": ""
+                    }
+                ]
+            },
+            {
+                "name": "replaceAll",
+                "params": [
+                    {
+                        "type": "str",
+                        "value": "altitude"
+                    },
+                    {
+                        "type": "str",
+                        "value": ""
+                    }
+                ]
+            },
+            {
+                "name": "replaceAll",
+                "params": [
+                    {
+                        "type": "str",
+                        "value": ":"
+                    },
+                    {
+                        "type": "str",
+                        "value": ""
+                    }
+                ]
+            },
+            {
+                "name": "replaceAll",
+                "params": [
+                    {
+                        "type": "str",
+                        "value": "luminosidade"
+                    },
+                    {
+                        "type": "str",
+                        "value": ""
+                    }
+                ]
+            }
+        ],
+        "prop": "payload",
+        "propout": "payload",
+        "object": "msg",
+        "objectout": "msg",
+        "x": 370,
+        "y": 220,
+        "wires": [
+            [
+                "eb0604b43af071e0"
+            ]
+        ]
+    },
+    {
+        "id": "eb0604b43af071e0",
+        "type": "csv",
+        "z": "6e6ba8efcb028acc",
+        "name": "sepaarete",
+        "sep": ",",
+        "hdrin": "",
+        "hdrout": "none",
+        "multi": "one",
+        "ret": "\\n",
+        "temp": "Temperatura,Umidade,NivelCo2,Pressao,Altitude,Luminosidade",
+        "skip": "0",
+        "strings": true,
+        "include_empty_strings": "",
+        "include_null_values": "",
+        "x": 540,
+        "y": 220,
+        "wires": [
+            [
+                "24c02b58f4ac28ed"
+            ]
+        ]
+    },
+    {
+        "id": "d27aaa05733a2969",
+        "type": "debug",
+        "z": "6e6ba8efcb028acc",
+        "name": "debug 12",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 440,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "24c02b58f4ac28ed",
+        "type": "function",
+        "z": "6e6ba8efcb028acc",
+        "name": "function 1",
+        "func": "Temperatura = msg.payload.Temperatura\nUmidade = msg.payload.Umidade\nNivelCo2 = msg.payload.NivelCo2\nPressao = msg.payload.Pressao\nAltitude = msg.payload.Altitude\nLuminosidade = msg.payload.Luminosidade\nLocate = \"Fatec\"\n\n\nmsg.payload={}\nmsg.payload.Temperatura = Temperatura\nmsg.payload.Umidade = Umidade\nmsg.payload.NivelCo2 = NivelCo2\nmsg.payload.Pressao = Pressao\nmsg.payload.Altitude = Altitude\nmsg.payload.Luminosidade = Luminosidade\nmsg.payload.Locate = Locate\n\nmsg.topic = \"INSERT INTO leitura (Id,Temperatura,Umidade,NivelCo2,Pressao,Altitude,Luminosidade,Locate) VALUES (NULL, :Temperatura, :Umidade, :NivelCo2, :Pressao, :Altitude, :Luminosidade, :Locate )\"\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 14,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 720,
+        "y": 220,
+        "wires": [
+            [
+                "a9bd125a0c15c74b",
+                "21e40dd9c423a9ec"
+            ]
+        ]
+    },
+    {
+        "id": "a9bd125a0c15c74b",
+        "type": "mysql",
+        "z": "6e6ba8efcb028acc",
+        "mydb": "ebaf2faa52587e50",
+        "name": "",
+        "x": 1020,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e1c5b2ccc1198e48",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "http://broker.emqx.io",
+        "port": "1883",
+        "clientid": "/bmp_bh_sht",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "ebaf2faa52587e50",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "db_ajax",
+        "tz": "",
+        "charset": "UTF8"
+    }
+]
