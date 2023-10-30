@@ -1,0 +1,6 @@
+Incluir o nome das depencias que precisam ser instaladas no Node-Red através do GERENCIADOR DA PALETA
+  Exemplo:
+  node-red-contrib-string
+  node-red-node-mysql
+
+  FAVOR VERIFICAR SE SÃO SÓ ESSES!
