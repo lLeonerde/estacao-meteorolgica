@@ -6,7 +6,7 @@ set mysql_user=root
 set mysql_password=JoaoDoPaoDoce
 
 rem Nome do arquivo de backup gerado
-set backup_path=F:\New Folder\MySQL Backup
+set backup_path=C:\New Folder\MySQL Backup
 set backup_name=db_milan
 
 rem Criação do backup
