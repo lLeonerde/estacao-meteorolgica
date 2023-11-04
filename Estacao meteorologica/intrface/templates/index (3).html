@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{url_for('static',filename= 'style.css')}}">
+</head>
+<body style="background-color:{{fundo}}">
+    <div class="info">
+        <img src={{Clima}} alt="nublado">
+        <h1>21°</h1><br><h2>{{Info}} <br><p>Sensasão Termica de: {{ Temp }}°C </p></h2><h3>Atualizado em: {{Hora}}</h3>
+    </div>
+    <div class="vetor">
+         <img  id= "Fatec" src="{{url_for('static',filename= 'Fatec_Predio.svg')}}" alt="Fatec_Predio" >
+    <div class="Logo">
+        <img src="{{url_for('static',filename= 'FatecJdi_Logo.svg')}}" alt="logo">
+    </div>
+    <div class="grid-container">
+        <div>  <img src="{{Pluviosidade}}" alt="pluviosidade"></div>
+        <div>Pluviosidade <br>{{DataPluv}} mm</div>
+        <div> <img src="{{Luminosidade}}" alt="Luminosidade"></div>
+        <div>Luminosidade <br>{{DataLum}} lx</div>
+        <div> <img src="{{Vento}}" alt="Vento"></div>
+        <div>Vento <br>{{VentoVel}} km/h {{VentoDir}}</div>
+        <div> <img src="{{UV}}" alt="Índice UV"></div>
+        <div>Índice UV <br>{{DataUV}}</div>
+        <div> <img src="{{Umidade}}" alt="Umidade"></div>
+        <div>Umidade <br>{{DataUmi}} %</div>
+        <div> <img src="{{CO}}" alt="CO"></div>
+        <div>CO <br>{{DataCO}} ppm</div>
+        <div> <img src="{{Chuva}}" alt="Chuva"></div>
+        <div>Chuva <br>{{DataChu}}</div>
+        <div> <img src="{{Pressao}}" alt="Pressão"></div>
+        <div>Pressão <br>{{DataPre}} atm</div>
+    </div>
+
+</body>
+</html>
