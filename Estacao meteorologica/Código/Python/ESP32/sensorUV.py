@@ -12,10 +12,10 @@ class uv_sensor:
 
     def converter_val_uv(self):
         val_sensorV = (self.adc.read() * 3.3)/4095 #valor em volts
-        valor_sensorMV = round(((self.adc.read() * 3.3)/4095) * 1000,4)
+        valor_sensorMV = round(((self.adc.read() * 3.3)/4095) * 1000,4) #valor em Milivolts
         return val_sensorV,valor_sensorMV
     
-    def mostrarUV_index(self):
+    def mostrarUV_index(self): # Usa milivolts para definir o nivel
         valor_sensorMV = round(((self.adc.read() * 3.3)/4095) * 1000,4)
         if valor_sensorMV <50:
             UV_index = 0
