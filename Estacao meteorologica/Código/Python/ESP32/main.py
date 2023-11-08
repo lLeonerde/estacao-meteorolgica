@@ -78,10 +78,12 @@ co_sens = 4
 uv_sens = 2
 anemometro_sens = (14,27,26)
 Ms,Sm,Ls = anemometro_sens
+pluvio = 13
 
 CO = MQ7(co_sens)
 UV = uv_sensor(uv_sens)
 RdV = RdV(Ms,Sm,Ls)
+PLV = Pluviometro(pluvio)
 
 
 gc.collect()
@@ -189,7 +191,7 @@ try:
             #======= Pluviometro (Precipitação pluviométrica)    ====#
             #========================================================#
 
-            #falta adicionar pluviometro
+            chuva_mm = PLV.volume_chuva()
 
             #==============================================#
             #======= Bloco de tratamento do sensor     ====#
@@ -218,7 +220,7 @@ try:
 
             print('Publicando no servidor MQTT') 
             cliente.connect()
-            test = '{"temperatura" : ' + str(aht.temperature) + ', "umidade" : ' + str(aht.humidity) + ', "nivel_co" : ' + str(taxa_CO) + ', "pressao" : ' + str(pressao) + ', "altitude" : ' + str(altitude) + ', "luminosidade" : ' + str(mesure_lux)  + ', "Indice_UV" : ' + str(UV_index) + '}'
+            test = '{"temperatura" : ' + str(aht.temperature) + ', "umidade" : ' + str(aht.humidity) + ', "nivel_co" : ' + str(taxa_CO) + ', "pressao" : ' + str(pressao) + ', "altitude" : ' + str(altitude) + ', "luminosidade" : ' + str(mesure_lux)  + ', "Indice_UV" : ' + str(UV_index) + ', "Volume_chuva" : ' +  str(chuva_mm) + '}'
             print(test)
             cliente.publish(topic.encode(), test.encode())
             cliente.disconnect()
