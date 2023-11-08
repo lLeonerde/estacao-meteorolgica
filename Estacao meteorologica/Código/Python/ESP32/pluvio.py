@@ -13,7 +13,7 @@ class Pluviometro:
         self.lock = _thread.allocate_lock()
         _thread.start_new_thread(self.__monitorar_chuva, ())
 
-    def __medir_chuva(self, pin):
+    def __medir_chuva(self):
         sleep(0.5)
         if not self.chuva_comecou:        
             with self.lock:

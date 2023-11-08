@@ -31,7 +31,8 @@ from aht import AHT2x               # Temperatura e umidade
 from RoTW import RoTW               # Rosa dos Ventos
 import bh1750                       # Luminosidade
 from MQ7 import MQ7
-
+from pluvio import Pluviometro
+from 
 
 
 #== Classes para configuração do ESP32 como servidor WEB E mqtt
@@ -63,7 +64,6 @@ def localizaDispI2C():
 
 
 #==============================================#
-
 #==============================================#
 #============= Programa Principal =============#
 #==============================================#
@@ -208,7 +208,7 @@ try:
                 sleep(0.25)
             print(estacao.ifconfig())
 
-            
+
             print('Publicando no servidor MQTT') 
             cliente.connect()
             test = '{"temperatura" : ' + str(aht.temperature) + ', "umidade" : ' + str(aht.humidity) + ', "mivel_co2" : ' + str(taxaCO2.eCO2) + ', "pressao" : ' + str(pressao) + ', "altitude" : ' + str(altitude) + ', "luminosidade" : ' + str(mesure_lux)  + '}'
