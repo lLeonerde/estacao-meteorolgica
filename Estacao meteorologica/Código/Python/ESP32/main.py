@@ -30,7 +30,9 @@ from mpl3115a2 import MPL3115A2     # Pressão e altitude
 from aht import AHT2x               # Temperatura e umidade
 from RoTW import RoTW               # Rosa dos Ventos
 import bh1750                       # Luminosidade
-from MQ7 import MQ7
+from MQ7 import MQ7                 # Sensor de Gás (carbono)
+from sensorUV import uv_sensor      # Sensor Ultravioleta
+from pluvio import Pluviometro      # Sensor para mediçao de chuva
 
 
 
@@ -73,9 +75,15 @@ i2c = I2C(0, scl=Pin(22), sda=Pin(21))
 #-- A lista "dispositivos" recebe um array de dispositivos encontrados
 dispositivos = localizaDispI2C()
 
-co2 = ADC(Pin(4))
-co2.atten(ADC.ATTN_11DB)
-tacaCO = MQ7(co2)
+# Sensores e as portas utilizadas no ESP
+co_sens = 4
+CO = MQ7(co_sens)
+
+uv_sens = 2
+UV = uv_sensor(uv_sens)
+
+
+
 gc.collect()
 
 strBufTransmissao = ["0.0", "0.0", "N", "57", "22", "0.97", "716.4", "0.0", "0.0"]
@@ -188,21 +196,21 @@ try:
             #======= MQ7 (CO)                          ====#
             #==============================================#
 
-            # falta aq tbm
+            taxa_CO = CO.read()
 
             #==============================================#
             #======= Bloco de tratamento do sensor     ====#
             #======= Uv (uv)(n sei o nome)             ====#
             #==============================================#
 
-            # falta aq tbm
+            UV_index = UV.mostrarUV_index()
 
 
             # Enviando dados pelo MQTT
             
             print('Publicando no servidor MQTT') 
             cliente.connect()
-            test = '{"temperatura" : ' + str(aht.temperature) + ', "umidade" : ' + str(aht.humidity) + ', "mivel_co2" : ' + str(taxaCO2.eCO2) + ', "pressao" : ' + str(pressao) + ', "altitude" : ' + str(altitude) + ', "luminosidade" : ' + str(mesure_lux)  + '}'
+            test = '{"temperatura" : ' + str(aht.temperature) + ', "umidade" : ' + str(aht.humidity) + ', "nivel_co" : ' + str(taxa_CO) + ', "pressao" : ' + str(pressao) + ', "altitude" : ' + str(altitude) + ', "luminosidade" : ' + str(mesure_lux)  + ', "Indice_UV" : ' + str(UV_index) + '}'
             print(test)
             cliente.publish(topic.encode(), test.encode())
             cliente.disconnect()
@@ -221,5 +229,7 @@ except Exception as Err:
 except KeyboardInterrupt:
   s.close()
   estacao.active(False)
+
+
 
 
