@@ -79,9 +79,8 @@ uv_sens = 2
 anemometro_sens = (14,27,26)
 Ms,Sm,Ls = anemometro_sens
 encoderA, encoderB = (19,23)
-
-
 pluvio = 13
+
 
 CO = MQ7(co_sens)
 UV = uv_sensor(uv_sens)
@@ -127,20 +126,6 @@ try:
             #-- Varre todos os dispositivos da rede e "pega" o 
             #   que eles estão escrevendo no intervalo de 1 segundo
             for i in dispositivos:
-                #print('entrou no for')
-            #==============================================#
-            #===== Bloco de tratamento do Anemômetro ======#
-            #==============================================#
-
-                Wind_speed = Enc.read()
-
-            #==============================================#
-            #======= Bloco de tratamento do sensor ========#
-            #======= Rosa dos ventos               ========#
-            #==============================================#
-
-                Wind_direction = Rosaventop.read()
-
             #==============================================#
             #======= Bloco de tratamento do sensor     ====#
             #======= AHT (umidade e temperatura)     ======#
@@ -183,11 +168,24 @@ try:
                             mesure_lux = captura.leitura_lux(bh1750.MODE_CONTINU_HAUTE_RESOLUTION)
                             if mesure_lux >= 0:
                                 print("Luminosidade..............: {} lux".format(mesure_lux))
-                                print("_________________________________________")
+                                
                                 break
                             sleep(0.2)
                             
-                    
+            #==============================================#
+            #===== Bloco de tratamento do Anemômetro ======#
+            #==============================================#
+
+                Wind_speed = Enc.read()
+
+            #==============================================#
+            #======= Bloco de tratamento do sensor ========#
+            #======= Rosa dos ventos               ========#
+            #==============================================#
+
+                Wind_direction = Rosaventop.read()
+                print(f"Direção do vento..............: {Wind_direction}\n")
+
 
             #========================================================#
             #======= Bloco de tratamento do sensor reed-switch   ====#
@@ -195,13 +193,14 @@ try:
             #========================================================#
 
             chuva_mm = PLV.volume_chuva()
-
+            print(f"mm chuva..............: {chuva_mm}\n")
             #==============================================#
             #======= Bloco de tratamento do sensor     ====#
             #======= MQ7 (CO)                          ====#
             #==============================================#
 
             taxa_CO = CO.read()
+            print(f"Co..............: {taxa_CO}\n")
 
             #==============================================#
             #======= Bloco de tratamento do sensor     ====#
@@ -209,7 +208,8 @@ try:
             #==============================================#
 
             UV_index = UV.mostrarUV_index()
-
+            print(f"Uv..............: {UV_index}")
+            print("_________________________________________")
 
             # Enviando dados pelo MQTT
             
