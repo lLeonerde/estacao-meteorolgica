@@ -176,15 +176,16 @@ try:
             #===== Bloco de tratamento do Anemômetro ======#
             #==============================================#
 
-                Wind_speed = Enc.read()
+            Wind_speed = Enc.read()
+            print(f"Eu sou a velocidade............:{Wind_speed}\n")
 
             #==============================================#
             #======= Bloco de tratamento do sensor ========#
             #======= Rosa dos ventos               ========#
             #==============================================#
 
-                Wind_direction = Rosaventop.read()
-                print(f"Direção do vento..............: {Wind_direction}\n")
+            Wind_direction = Rosaventop.read()
+            print(f"Direção do vento..............: {Wind_direction}\n")
 
 
             #========================================================#
