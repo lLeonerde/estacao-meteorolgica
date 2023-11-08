@@ -28,13 +28,12 @@ from time import time, sleep
 
 from mpl3115a2 import MPL3115A2     # Pressão e altitude
 from aht import AHT2x               # Temperatura e umidade
-from RoTW import RoTW               # Rosa dos Ventos
 import bh1750                       # Luminosidade
 from MQ7 import MQ7                 # Sensor de Gás (carbono)
 from sensorUV import uv_sensor      # Sensor Ultravioleta
 from pluvio import Pluviometro      # Sensor para mediçao de chuva
-
-
+from anemometro import RdV
+from encoder import Encoder
 
 #== Classes para configuração do ESP32 como servidor WEB E mqtt
 from umqtt.simple import MQTTClient
@@ -77,16 +76,16 @@ dispositivos = localizaDispI2C()
 # Sensores e as portas utilizadas no ESP
 co_sens = 4
 uv_sens = 2
-
+anemometro_sens = (14,27,26)
+Ms,Sm,Ls = anemometro_sens
 
 CO = MQ7(co_sens)
 UV = uv_sensor(uv_sens)
-
+RdV = RdV(Ms,Sm,Ls)
 
 
 gc.collect()
 
-strBufTransmissao = ["0.0", "0.0", "N", "57", "22", "0.97", "716.4", "0.0", "0.0"]
 
 print("Iniciando WiFi...")
 estacao = network.WLAN(network.STA_IF)

@@ -4,8 +4,8 @@ import _thread
 
 
 #Inicio class rosa dos ventos
-class Rosa_dos_ventos:
-    def __init__(self, pinMs, pinSm,pinLs):
+class RdV:
+    def __init__(self, pinMs, pinSm,pinLs,time=10):
         pinMs = ADC(Pin(pinMs))
         pinSm = ADC(Pin(pinSm))
         pinLs = ADC(Pin(pinLs))
@@ -22,6 +22,7 @@ class Rosa_dos_ventos:
         self.pinMs = pinMs
         self.pinSm = pinSm
         self.pinLs = pinLs
+        self.time = time
         _thread.start_new_thread(self.__monitoring, ())
 
     #thread pra monitorar a posição (atualiza a cada 10 sec)
@@ -35,7 +36,7 @@ class Rosa_dos_ventos:
                 self.actualPosition = self.positions[val]
             except:
                 self.actualPosition = "Cannot find any position. Verify the sensor"
-            sleep(10)
+            sleep(self.time)
 
     #retorna a posição atual
     def read(self):
