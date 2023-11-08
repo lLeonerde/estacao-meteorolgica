@@ -76,9 +76,10 @@ dispositivos = localizaDispI2C()
 
 # Sensores e as portas utilizadas no ESP
 co_sens = 4
-CO = MQ7(co_sens)
-
 uv_sens = 2
+
+
+CO = MQ7(co_sens)
 UV = uv_sensor(uv_sens)
 
 
