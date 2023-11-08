@@ -1,43 +1,40 @@
-from machine import ADC, Pin
-from utime import sleep
+from machine import Pin
+from utime import sleep, time
 import _thread
-
-
-#Inicio class rosa dos ventos
-class RdV:
-    def __init__(self, pinMs, pinSm,pinLs,time=10):
-        pinMs = ADC(Pin(pinMs))
-        pinSm = ADC(Pin(pinSm))
-        pinLs = ADC(Pin(pinLs))
-        pinMs.width(ADC.WIDTH_12BIT) 
-        pinMs.atten(ADC.ATTN_0DB)
-        pinSm.width(ADC.WIDTH_12BIT) 
-        pinSm.atten(ADC.ATTN_0DB)
-        pinLs.width(ADC.WIDTH_12BIT) 
-        pinLs.atten(ADC.ATTN_0DB)
-
-        #Possições com base no circuito
-        self.positions = ["S","Ne","E","Se","Nw","W","Sw","N"]
-        self.actualPosition = ""
-        self.pinMs = pinMs
-        self.pinSm = pinSm
-        self.pinLs = pinLs
-        self.time = time
+class Encoder():
+    def __init__(self,pinA, pinB):
+        #ANTES QUE PERGUNTEM N FAÇO IDEIA PRA Q ESSES 2 PINOS SERVEM
+        a = Pin(pinA,Pin.IN, Pin.PULL_UP)
+        b = Pin(pinB,Pin.IN, Pin.PULL_UP)
+        self.A = a
+        self.B = b
+        self.pulse = 0
+        self.pulse_per_revolution = 360
+        self.circumference = 0.2 #ex: 20cm diameter
+        self.time = 1.0
+        self.vKmph = 0
+        
         _thread.start_new_thread(self.__monitoring, ())
 
-    #thread pra monitorar a posição (atualiza a cada 10 sec)
-    def __monitoring(self):
-        while True:
-            Ms = self.pinMs.read()
-            Sm = self.pinSm.read()
-            Ls = self.pinLs.read()
-            try:
-                val = int(f"{Ms}{Sm}{Ls}",2)
-                self.actualPosition = self.positions[val]
-            except:
-                self.actualPosition = "Cannot find any position. Verify the sensor"
-            sleep(self.time)
+    def __count(self,p):
+        if p == self.A:
+            self.pulse += 1 if self.A.value() == self.B.value() else -1
+        else:
+            self.pulse += 1 if self.A.value() != self.B.value() else -1
 
-    #retorna a posição atual
+    def __monitoring(self):
+        self.A.irq(trigger=Pin.IRQ_RISING or Pin.IRQ_FALLING, handler=self.__count)
+        self.B.irq(trigger=Pin.IRQ_RISING or Pin.IRQ_FALLING, handler=self.__count)
+        
+        last_pulse = self.pulse
+
+        sleep(time)
+
+        pps = self.pulse - last_pulse
+        rps = pps / self.pulse_per_revolution
+        self.vKmph = rps * self.circumference*3.6
+        
+        self.pulse = 0
+
     def read(self):
-        return self.actualPosition
+        return self.vKmph
