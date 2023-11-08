@@ -118,7 +118,8 @@ try:
         #-- Loop infinito caso exista algum dispositivo...
         while (True):
             
-            
+            estacao.ative(False)
+
             #-- Varre todos os dispositivos da rede e "pega" o 
             #   que eles estão escrevendo no intervalo de 1 segundo
             for i in dispositivos:
@@ -207,6 +208,14 @@ try:
 
 
             # Enviando dados pelo MQTT
+            
+            estacao.ative(True)
+            estacao.connect('','')
+
+            while estacao.isconnected() == False:
+                sleep(0.25)
+            print(estacao.ifconfig())
+
             
             print('Publicando no servidor MQTT') 
             cliente.connect()
