@@ -81,10 +81,12 @@ Ms,Sm,Ls = anemometro_sens
 encoderA, encoderB = (19,23)
 
 
+pluvio = 13
 
 CO = MQ7(co_sens)
 UV = uv_sensor(uv_sens)
 Rosaventop = RdV(Ms,Sm,Ls)
+PLV = Pluviometro(pluvio)
 Enc = Encoder(encoderA,encoderB)
 
 gc.collect()
@@ -192,7 +194,7 @@ try:
             #======= Pluviometro (Precipitação pluviométrica)    ====#
             #========================================================#
 
-            #falta adicionar pluviometro
+            chuva_mm = PLV.volume_chuva()
 
             #==============================================#
             #======= Bloco de tratamento do sensor     ====#
@@ -221,7 +223,7 @@ try:
 
             print('Publicando no servidor MQTT') 
             cliente.connect()
-            test = '{"temperatura" : ' + str(aht.temperature) + ', "umidade" : ' + str(aht.humidity) + ', "nivel_co" : ' + str(taxa_CO) + ', "pressao" : ' + str(pressao) + ', "altitude" : ' + str(altitude) + ', "luminosidade" : ' + str(mesure_lux)  + ', "Indice_UV" : ' + str(UV_index) + '}'
+            test = '{"temperatura" : ' + str(aht.temperature) + ', "umidade" : ' + str(aht.humidity) + ', "nivel_co" : ' + str(taxa_CO) + ', "pressao" : ' + str(pressao) + ', "altitude" : ' + str(altitude) + ', "luminosidade" : ' + str(mesure_lux)  + ', "Indice_UV" : ' + str(UV_index) + ', "Volume_chuva" : ' +  str(chuva_mm) + '}'
             print(test)
             cliente.publish(topic.encode(), test.encode())
             cliente.disconnect()
