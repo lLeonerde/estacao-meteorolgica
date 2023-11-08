@@ -208,8 +208,8 @@ try:
             #======= Uv (uv)(n sei o nome)             ====#
             #==============================================#
 
-            UV_index = UV.mostrarUV_index()
-            print(f"Uv..............: {UV_index}")
+            UV_indice = UV.mostrarUV_index()
+            print(f"Uv..............: {UV_indice}")
             print("_________________________________________")
 
             # Enviando dados pelo MQTT
@@ -224,7 +224,7 @@ try:
 
             print('Publicando no servidor MQTT') 
             cliente.connect()
-            test = '{"temperatura" : ' + str(aht.temperature) + ', "umidade" : ' + str(aht.humidity) + ', "nivel_co" : ' + str(taxa_CO) + ', "pressao" : ' + str(pressao) + ', "altitude" : ' + str(altitude) + ', "luminosidade" : ' + str(mesure_lux)  + ', "Indice_UV" : ' + str(UV_index) + ', "Volume_chuva" : ' +  str(chuva_mm) + '}'
+            test = '{"temperatura" : ' + str(aht.temperature) + ', "umidade" : ' + str(aht.humidity) + ', "nivel_co" : ' + str(taxa_CO) + ', "pressao" : ' + str(pressao) + ', "altitude" : ' + str(altitude) + ', "luminosidade" : ' + str(mesure_lux)  + ', "Indice_UV" : ' + str(UV_indice) + ', "Volume_chuva" : ' +  str(chuva_mm) + ', "Velocidade_vento" : ' + str(Wind_speed) + ', "Dir_vento" : ' + str(Wind_direction) + '}'
             print(test)
             cliente.publish(topic.encode(), test.encode())
             cliente.disconnect()
